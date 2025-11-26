@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Models\Category;
+use \App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -20,9 +22,13 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        Category::create($request->validated());
+        return response()->json([
+            'success' => true,
+            'category' => $request->name,
+        ]); 
     }
 
     /**
@@ -30,15 +36,34 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $cat = Category::find($id);
+        if(!$cat){
+            return response()->json([
+                'success'=>false,
+                
+            ],404);
+        }else{
+            return response()->json([
+                'category'=>$cat,
+            ],200);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, string $id)
     {
-        //
+        $cat = Category::find($id);
+        if(!$cat){
+            return response()->json([
+                'message'=>'not found',
+            ],404);
+        }
+        $cat->update($request->validated());
+        return response()->json([
+            'updated'=>$cat,
+        ],201);
     }
 
     /**
@@ -46,6 +71,17 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $cat = Category::find($id);
+        if(!$cat){
+            return response()->json([
+                'message'=>'not found',
+            ],404);
+        }
+        $cat->delete();
+        return response()->json([
+            "message"=>"deleted",
+        ],204);
+
     }
+
 }
