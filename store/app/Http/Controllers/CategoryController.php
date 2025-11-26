@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,25 +11,18 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = \App\Models\Category::all();
+        $cats = \App\Models\Category::all();
         return response()->json([
-            'categories' => $categories,
+            'cats' => $cats,
         ])->setStatusCode(200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateCategoryRequest $request)
+    public function store(Request $request)
     {
-        $category = \App\Models\Category::create([
-            'name' => $request->input('name'),
-        ]);
-
-        return response()->json([
-            'message' => 'Category created successfully',
-            'category' => $category,
-        ])->setStatusCode(201);
+        //
     }
 
     /**
@@ -38,7 +30,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = \App\Models\Category::where('id',$id)->first();
+        //
     }
 
     /**
