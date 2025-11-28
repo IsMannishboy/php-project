@@ -53,16 +53,24 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      */
     public function update(CategoryRequest $request, string $id)
-    {
+    {   
+
         $cat = Category::find($id);
         if(!$cat){
             return response()->json([
                 'message'=>'not found',
             ],404);
         }
-        $cat->update($request->validated());
+        $cat->update(['name'=>$request->name]);
+        $new_cat = Category::find($id);
+        if(!$new_cat){
+              return response()->json([
+                'message'=>'not found',
+            ],424);
+        }
         return response()->json([
-            'updated'=>$cat,
+            "request name"=>$request->name,
+            'updated'=>$new_cat,
         ],201);
     }
 
