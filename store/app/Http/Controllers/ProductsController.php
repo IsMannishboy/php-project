@@ -122,6 +122,15 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $prod = Product::find($id);
+        if(!$prod){
+            return response()->json([
+                "status"=>'not found'
+            ],404);
+        }
+        $prod->delete();
+        return response()->json([
+            'status'=>'deleted',
+        ],204);
     }
 }
